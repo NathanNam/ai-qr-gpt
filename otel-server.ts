@@ -73,6 +73,19 @@ export const logger = logs.getLogger(serviceName);
 export const tracer = trace.getTracer(serviceName);
 export const meter = metrics.getMeter(serviceName);
 
+export async function flushOtel(): Promise<void> {
+  try {
+    await sdk.forceFlush();
+  } catch (error) {
+    logger.emit({
+      severityNumber: SeverityNumber.ERROR,
+      severityText: 'ERROR',
+      body: 'Error flushing OpenTelemetry SDK',
+      attributes: { error: (error as Error).message },
+    });
+  }
+}
+
 // Initialize OpenTelemetry and return initialized components
 export function initOtel() {
   try {

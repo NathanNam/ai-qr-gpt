@@ -7,7 +7,7 @@ import { put } from '@vercel/blob';
 import { nanoid } from '@/utils/utils';
 import { SpanStatusCode, Span } from '@opentelemetry/api';
 import { SeverityNumber } from '@opentelemetry/api-logs';
-import { logger, tracer, meter } from '@/otel-server';
+import { logger, tracer, meter, flushOtel } from '@/otel-server';
 
 // Initialize metrics
 const requestCounter = meter.createCounter('qr_generation_requests_total', {
@@ -303,6 +303,7 @@ export async function POST(request: NextRequest) {
 
       return new Response('Internal Server Error', { status: 500 });
     } finally {
+      await flushOtel();
       span.end();
     }
   });

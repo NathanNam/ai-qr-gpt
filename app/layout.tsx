@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import Footer from '@/components/Footer';
 import { Analytics } from '@vercel/analytics/react';
 import PlausibleProvider from 'next-plausible';
+import OpenTelemetryProvider from '@/components/OpenTelemetryProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -49,6 +50,7 @@ export default function RootLayout({
         <PlausibleProvider domain="qrgpt.io" />
       </head>
       <body className={inter.className}>
+        <OpenTelemetryProvider />
         <Navbar />
         <main>{children}</main>
         <Analytics />
